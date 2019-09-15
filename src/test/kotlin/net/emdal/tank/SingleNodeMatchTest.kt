@@ -1,7 +1,5 @@
 package net.emdal.tank
 
-import org.assertj.core.api.Assertions.assertThat
-import org.neo4j.driver.Config
 import org.neo4j.driver.Driver
 import org.neo4j.driver.GraphDatabase
 import org.neo4j.harness.TestServerBuilders
@@ -18,8 +16,9 @@ object SingleNodeMatchTest : Spek({
     lateinit var driver: Driver
 
     describe("Match tests") {
-        beforeGroup { driver = GraphDatabase.driver(db.boltURI()) }
-        afterGroup { driver.close() }
+        beforeEachTest { driver = GraphDatabase.driver(db.boltURI()) }
+        afterEachTest { driver.close() }
+
         it("Fetch Single Node with a string parameter") {
 
             class TestEntity(val parameter: String? = null, val expected: String? = null) : Node()
@@ -34,7 +33,22 @@ object SingleNodeMatchTest : Spek({
                     )
                 }
             val result = transaction(driver) { match(TestEntity(parameter = parameterValue)) }
-            assertThat(result.first().expected).isEqualTo(expected)
+            result.first().expected eq expected
+        }
+
+        it("Label annotation works") {
+
+            @Label("SomeOtherName")
+            class TestEntity(val parameter: String? = null) : Node()
+
+            val expected = "Some string value"
+
+            driver.session()
+                .use { session ->
+                    session.run("CREATE (n:SomeOtherName { parameter: \"$expected\" } )")
+                }
+            val result = transaction(driver) { match(TestEntity(parameter = expected)) }
+            result.first().parameter eq expected
         }
     }
 })
