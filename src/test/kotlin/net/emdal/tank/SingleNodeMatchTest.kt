@@ -30,7 +30,7 @@ object SingleNodeMatchTest : Spek({
             driver.session()
                 .use { session ->
                     session.run(
-                        "CREATE (n:MyLabel { parameter: \"$parameterValue\", expected: \"$expected\" } )"
+                        "CREATE (n:TestEntity { parameter: \"$parameterValue\", expected: \"$expected\" } )"
                     )
                 }
             val result = transaction(driver) { match(TestEntity(parameter = parameterValue)) }
