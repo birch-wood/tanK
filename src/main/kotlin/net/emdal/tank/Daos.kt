@@ -1,19 +1,19 @@
 package net.emdal.tank
 
-import org.neo4j.driver.internal.value.StringValue
+import org.neo4j.driver.Driver
+import org.neo4j.driver.Session
 
-abstract class Node(val id: Long)
+abstract class Node
 
 @Target(AnnotationTarget.CLASS)
 annotation class Label(val name: String)
 
-@Target(AnnotationTarget.PROPERTY)
-annotation class Parameter(val name: String)
-
 @Label("Recipe")
 class Recipe(
-    id:Long = -1,
+    val id: Long? = null,
+    val name:String? = null
+) : Node()
 
-    @Parameter("name")
-    val name:String = "name"
-) : Node(id)
+fun <T> transaction(driver: Driver, function: Session.() -> T): T {
+    return driver.use { function(it.session()) }
+}

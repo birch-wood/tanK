@@ -22,17 +22,19 @@ object SingleNodeMatchTest : Spek({
         afterGroup { driver.close() }
         it("Fetch Single Node with a string parameter") {
 
-            @Label("MyLabel")
-            class TestEntity(id: Long = -1, val parameter:String = "parameter") : Node(id)
+            class TestEntity(val parameter: String? = null, val expected: String? = null) : Node()
 
             val parameterValue = "Some string value"
-            driver.session().use { session -> session.run("CREATE (n:MyLabel { parameter: \"$parameterValue\" } )") }
-            val result = transaction(driver) {
-                match<TestEntity> {
-                    parameter eq parameterValue
+            val expected = "Expected result"
+
+            driver.session()
+                .use { session ->
+                    session.run(
+                        "CREATE (n:MyLabel { parameter: \"$parameterValue\", expected: \"$expected\" } )"
+                    )
                 }
-            }.first()
-            assertThat(result.parameter).isEqualTo(parameterValue)
+            val result = transaction(driver) { match(TestEntity(parameter = parameterValue)) }
+            assertThat(result.first().expected).isEqualTo(expected)
         }
     }
 })

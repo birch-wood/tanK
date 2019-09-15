@@ -1,9 +1,7 @@
 package net.emdal.tank
 
 import org.neo4j.driver.AuthTokens
-import org.neo4j.driver.Driver
 import org.neo4j.driver.GraphDatabase
-import org.neo4j.driver.Session
 
 fun main() {
     val username = "neo4j"
@@ -14,17 +12,6 @@ fun main() {
             , AuthTokens.basic(username, password)
         )
 
-    val asd = transaction(driver) {
-        match<Recipe> {
-            name eq "Cookies"
-        }
-    }.map { it.id }
-    println(asd)
+    val kake = transaction(driver) { match(Recipe(name = "Cookies")) }.map { it.name }
+    println(kake)
 }
-
-class TankSession(val session: Session)
-
-fun <T> transaction(driver: Driver, function: TankSession.() -> T): T {
-    return driver.use { function(TankSession(it.session())) }
-}
-
