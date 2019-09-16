@@ -9,7 +9,7 @@ plugins {
   kotlin("jvm") version "1.3.50"
 }
 
-group = "neo4k"
+group = "net.emdal.tanK"
 version = "0.0.1"
 
 repositories {
@@ -21,12 +21,10 @@ dependencies {
   implementation(kotlin("stdlib-jdk8"))
   implementation(kotlin("reflect"))
   implementation("org.neo4j.driver:neo4j-java-driver:$neo4jJavaDriverVersion")
-
   testImplementation("org.neo4j.test:neo4j-harness:$neo4jVersion")
   testImplementation( "org.assertj:assertj-core:3.6.1")
   testImplementation("org.spekframework.spek2:spek-dsl-jvm:$spekVersion")
   testRuntimeOnly("org.spekframework.spek2:spek-runner-junit5:$spekVersion")
-//  testRuntimeOnly(kotlin("reflect"))
 }
 
 tasks {
