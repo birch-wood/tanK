@@ -6,49 +6,35 @@ import org.neo4j.harness.TestServerBuilders
 import org.spekframework.spek2.Spek
 import org.spekframework.spek2.style.specification.describe
 
+object TestEntity : Node("TestEntity") {
+  val parameter: String = "parameter"
+  val expected: String = "expected"
+}
 
 object SingleNodeMatchTest : Spek({
 
-    val db by memoized {
-        TestServerBuilders.newInProcessBuilder()
-            .newServer()
-    }
-    lateinit var driver: Driver
+  val db by memoized {
+    TestServerBuilders.newInProcessBuilder()
+      .newServer()
+  }
+  lateinit var driver: Driver
 
-    describe("Match tests") {
-        beforeEachTest { driver = GraphDatabase.driver(db.boltURI()) }
-        afterEachTest { driver.close() }
+  describe("Match tests") {
+    beforeEachTest { driver = GraphDatabase.driver(db.boltURI()) }
+    afterEachTest { driver.close() }
 
-        it("Fetch Single Node with a string parameter") {
+    it("Fetch Single Node with a string parameter") {
 
-            class TestEntity(val parameter: String? = null, val expected: String? = null) : Node()
+      val parameterValue = "Some string value"
+      val expected = "Expected result"
 
-            val parameterValue = "Some string value"
-            val expected = "Expected result"
-
-            driver.session()
-                .use { session ->
-                    session.run(
-                        "CREATE (n:TestEntity { parameter: \"$parameterValue\", expected: \"$expected\" } )"
-                    )
-                }
-            val result = transaction(driver) { match(TestEntity(parameter = parameterValue)) }
-            result.first().expected eq expected
+      val result = driver.transaction {
+        run("CREATE (n:TestEntity { parameter: \"$parameterValue\", expected: \"$expected\" } )")
+        match<TestEntity> {
+          parameter eq parameterValue
         }
-
-        it("Label annotation works") {
-
-            @Label("SomeOtherName")
-            class TestEntity(val parameter: String? = null) : Node()
-
-            val expected = "Some string value"
-
-            driver.session()
-                .use { session ->
-                    session.run("CREATE (n:SomeOtherName { parameter: \"$expected\" } )")
-                }
-            val result = transaction(driver) { match(TestEntity(parameter = expected)) }
-            result.first().parameter eq expected
-        }
+      }
+      result.first()[TestEntity.expected].asString() isEqualTo expected
     }
+  }
 })
