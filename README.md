@@ -1,2 +1,2 @@
-# neo4k
-A Kotlin DSL libary inspired by Kotlin Exposed
+# tanK
+A Kotlin DSL libary for Cypher inspired by Kotlin Exposed
