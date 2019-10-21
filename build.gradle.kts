@@ -24,6 +24,7 @@ dependencies {
     implementation("org.neo4j.driver:neo4j-java-driver:$neo4jJavaDriverVersion")
     testImplementation("org.testcontainers:neo4j:1.12.2")
     testImplementation("org.testcontainers:junit-jupiter:1.12.2")
+    testImplementation("org.assertj:assertj-core:3.10.0")
     testCompile( "ch.qos.logback:logback-classic:1.2.3")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:$junitVersion")
 }

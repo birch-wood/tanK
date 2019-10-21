@@ -9,17 +9,6 @@ open class Relationship(val name: String) : Entity()
 data class StringProperty(val propertyName:String)
 data class IntProperty(val propertyName:String)
 
-object Recipe : Node("Recipe") {
-  val name = string("name")
-}
-object MadeFrom : Relationship("MADE_FROM") {
-  val grams = int("grams").nullable()
-}
-
-object Ingredient : Node("Ingredient") {
-  val name = string("name")
-}
-
 data class Graph(val query: String = "", val aliases: List<Pair<String, Entity>> = emptyList())
 
 fun string(propertyName: String) = StringProperty(propertyName)
@@ -66,23 +55,6 @@ fun <T : Node> Graph.node(
 fun Session.query(block: Graph.() -> Graph)
     = this.run("${Graph().block().query} RETURN *").list().toList()
 
-private operator fun Value.get(property: StringProperty):String = this[property.propertyName].asString()
-private operator fun Value.get(property: IntProperty):Int = this[property.propertyName].asInt()
-private operator fun Value.get(property: IntProperty?):Int? = property?.let { this[property.propertyName].asInt() }
-
-fun main() {
-  val driver = driver()
-  val stuffICanMakeFromGroundBeef = driver.session().query {
-    match {
-      node("recipes", Recipe)
-        .relationship("madeOf", MadeFrom)
-        .node(Ingredient) { name eq "ground beef" }
-    }
-  }.map {
-    it["recipes"][Recipe.name] to it["madeOf"][MadeFrom.grams]
-  }
-  stuffICanMakeFromGroundBeef.forEach {(recipeName, grams) ->
-    println("I can make $recipeName if I have $grams grams ground beef")
-  }
-  driver.close()
-}
+operator fun Value.get(property: StringProperty):String = this[property.propertyName].asString()
+operator fun Value.get(property: IntProperty):Int = this[property.propertyName].asInt()
+operator fun Value.get(property: IntProperty?):Int? = property?.let { this[property.propertyName].asInt() }
