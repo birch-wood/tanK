@@ -51,7 +51,7 @@ class MatchTest {
             .node(Ingredient) { name eq "flour" }
         }
       }.forEach {
-        it["recipes"][Recipe.name] eq "cake"
+        it["recipes"][Recipe.name] eq "cae"
       }
     }
   }
