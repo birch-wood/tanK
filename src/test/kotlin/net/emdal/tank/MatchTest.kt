@@ -57,7 +57,7 @@ class MatchTest {
   }
 
   @Test
-  fun `match node with int property`() {
+  fun `match relationship with int property`() {
     driver.session().use { session ->
       session.deleteAllInDatabase()
       session.run(

@@ -5,6 +5,7 @@ val spekVersion = "2.0.7"
 val neo4jJavaDriverVersion = "4.0.0-beta01"
 val junitVersion = "5.5.2"
 val neo4jVersion = "3.5.9"
+val testcontainersVersion = "1.12.2"
 val kotlinVersion = plugins.getPlugin(KotlinPluginWrapper::class.java).kotlinPluginVersion
 plugins {
     kotlin("jvm") version "1.3.50"
@@ -22,8 +23,8 @@ dependencies {
     implementation(kotlin("stdlib-jdk8"))
     implementation(kotlin("reflect"))
     implementation("org.neo4j.driver:neo4j-java-driver:$neo4jJavaDriverVersion")
-    testImplementation("org.testcontainers:neo4j:1.12.2")
-    testImplementation("org.testcontainers:junit-jupiter:1.12.2")
+    testImplementation("org.testcontainers:neo4j:$testcontainersVersion")
+    testImplementation("org.testcontainers:junit-jupiter:$testcontainersVersion")
     testImplementation("org.assertj:assertj-core:3.10.0")
     testCompile( "ch.qos.logback:logback-classic:1.2.3")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:$junitVersion")
