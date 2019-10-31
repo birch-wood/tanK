@@ -22,11 +22,11 @@ class MatchQueryTest {
     Graph().match {
       node("a", Recipe)
         .relationship(MadeFrom)
-        .node(Ingredient) { Ingredient.name eq "sugar" }
+        .node(Ingredient) { name eq "sugar" }
     }.match {
       node("a")
         .relationship(MadeFrom)
-        .node(Ingredient) { Ingredient.name eq "flour" }
+        .node(Ingredient) { name eq "flour" }
     }.query eq """
       MATCH (a:Recipe)-[:MADE_FROM]->(:Ingredient { name: "sugar" })
       MATCH (a)-[:MADE_FROM]->(:Ingredient { name: "flour" })

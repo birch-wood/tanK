@@ -22,3 +22,4 @@ operator fun Value.get(property: StringProperty): String = this[property.propert
 operator fun Value.get(property: IntProperty): Int = this[property.propertyName].asInt()
 operator fun Value.get(property: IntProperty?): Int? =
   property?.let { this[property.propertyName].asInt() }
+
