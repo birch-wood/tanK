@@ -6,6 +6,7 @@ val neo4jJavaDriverVersion = "4.0.0-beta01"
 val junitVersion = "5.5.2"
 val neo4jVersion = "3.5.9"
 val testcontainersVersion = "1.12.2"
+val mockkVersion = "1.9.3"
 val kotlinVersion = plugins.getPlugin(KotlinPluginWrapper::class.java).kotlinPluginVersion
 plugins {
     kotlin("jvm") version "1.3.50"
@@ -26,6 +27,7 @@ dependencies {
     testImplementation("org.testcontainers:neo4j:$testcontainersVersion")
     testImplementation("org.testcontainers:junit-jupiter:$testcontainersVersion")
     testImplementation("org.assertj:assertj-core:3.10.0")
+    testImplementation("io.mockk:mockk:$mockkVersion")
     testCompile( "ch.qos.logback:logback-classic:1.2.3")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:$junitVersion")
 }

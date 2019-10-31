@@ -12,7 +12,7 @@ import org.testcontainers.junit.jupiter.Testcontainers
 
 @Testcontainers
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-class MatchTest {
+class MatchIntegrationTest {
 
   class Neo4kContainer : Neo4jContainer<Neo4kContainer>()
 
@@ -34,7 +34,7 @@ class MatchTest {
   }
 
   @Test
-  fun `match node with string property`() {
+  fun `match fetches string properties of nodes`() {
     driver.session().use { session ->
 
       session.deleteAllInDatabase()
@@ -57,7 +57,7 @@ class MatchTest {
   }
 
   @Test
-  fun `match relationship with int property`() {
+  fun `match fetches int properties of relationships`() {
     driver.session().use { session ->
       session.deleteAllInDatabase()
       session.run(
@@ -74,6 +74,34 @@ class MatchTest {
         }
       }.forEach {
         it["madeOf"][MadeFrom.grams] eq 100
+      }
+    }
+  }
+
+  @Test
+  fun `multiline match query fetches apropriate graphs`() {
+    driver.session().use { session ->
+      session.deleteAllInDatabase()
+      session.run(
+        """
+          CREATE (cake:Recipe { name: "cake" })-[:MADE_FROM { grams: 100 }]->(flour:Ingredient { name: "flour" })
+          CREATE (cake)-[:MADE_FROM { grams: 100 }]->(sugar:Ingredient { name: "sugar" })
+          CREATE (bread:Recipe { name: "bread" })-[:MADE_FROM { grams: 100 }]->(flour)
+        """.trimIndent()
+      )
+
+      session.query {
+        match {
+          node("a", Recipe)
+            .relationship(MadeFrom)
+            .node(Ingredient) { name eq "sugar" }
+        }.match {
+          node("a")
+            .relationship(MadeFrom)
+            .node(Ingredient) { name eq "flour" }
+        }
+      }.forEach {
+        it["a"][Recipe.name] eq "cake"
       }
     }
   }
