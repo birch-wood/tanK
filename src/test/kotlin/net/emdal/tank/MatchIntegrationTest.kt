@@ -79,7 +79,7 @@ class MatchIntegrationTest {
   }
 
   @Test
-  fun `multiline match query fetches apropriate graphs`() {
+  fun `multiline match query fetches appropriate graphs`() {
     driver.session().use { session ->
       session.deleteAllInDatabase()
       session.run(
