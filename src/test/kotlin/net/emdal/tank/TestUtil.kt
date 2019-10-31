@@ -3,7 +3,7 @@ package net.emdal.tank
 import org.assertj.core.api.Assertions.assertThat
 import org.neo4j.driver.Session
 
-infix fun Any?.eq(other:Any?) {
+infix fun Any?.eq(other: Any?) {
   assertThat(this).isEqualTo(other)
 }
 
@@ -13,6 +13,10 @@ fun Session.deleteAllInDatabase() {
 
 object Recipe : Node("Recipe") {
   val name = string("name")
+}
+
+object Norwegian : Node("Norwegian") {
+  val town = string("town")
 }
 
 object MadeFrom : Relationship("MADE_FROM") {
