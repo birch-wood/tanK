@@ -15,8 +15,14 @@ fun IntProperty.nullable(): IntProperty? = this
 fun StringProperty.nullable(): StringProperty? = this
 
 infix fun StringProperty.eq(value: String): String {
-  return """${this.propertyName}: "$value" """
+  return """${this.propertyName}: "$value""""
 }
+
+infix fun IntProperty?.eq(value: Int): String {
+  return """${this?.propertyName}: $value"""
+}
+
+infix fun String.and(newProperty:String) = "$this, $newProperty"
 
 operator fun Value.get(property: StringProperty): String = this[property.propertyName].asString()
 operator fun Value.get(property: IntProperty): Int = this[property.propertyName].asInt()
