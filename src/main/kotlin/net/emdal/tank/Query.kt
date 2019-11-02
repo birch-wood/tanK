@@ -1,6 +1,7 @@
 package net.emdal.tank
 
-import net.emdal.tank.Keyword.*
+import net.emdal.tank.Keyword.CREATE
+import net.emdal.tank.Keyword.MATCH
 import org.neo4j.driver.Session
 
 fun Session.query(block: Graph.() -> Graph) =

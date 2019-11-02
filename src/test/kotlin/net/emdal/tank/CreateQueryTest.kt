@@ -1,6 +1,5 @@
 package net.emdal.tank
 
-import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 
 class CreateQueryTest {
@@ -27,18 +26,16 @@ class CreateQueryTest {
     """.trimIndent()
   }
 
-
-  // TODO: Discuss multiple node creation syntax
-  @Disabled
   @Test
   internal fun `create multiple nodes with different aliases`() {
-    val query = Graph().create {
-      node("n")
-      node("m")
-    }.query
+    val query = Graph()
+      .create { node("n") }
+      .create { node("m") }
+      .query
 
     query eq """
-      CREATE (n), (m)
+      CREATE (n)
+      CREATE (m)
     """.trimIndent()
   }
 
@@ -54,12 +51,10 @@ class CreateQueryTest {
   }
 
 
-  // TODO: Discuss multiple labels
-  @Disabled
   @Test
   internal fun `create a node with multiple labels`() {
     val query = Graph().create {
-      node("n", Recipe)
+      node("n", Recipe, Norwegian)
     }.query
 
     query eq """

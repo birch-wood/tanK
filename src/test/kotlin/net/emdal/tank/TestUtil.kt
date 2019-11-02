@@ -23,7 +23,12 @@ object MadeFrom : Relationship("MADE_FROM") {
   val grams = int("grams").nullable()
 }
 
+object IsMainIngredient : Relationship("IS_MAIN_INGREDIENT") {
+  val reason = string("reason")
+}
+
 object Ingredient : Node("Ingredient") {
   val name = string("name")
+  val taste = string("taste")
 }
 

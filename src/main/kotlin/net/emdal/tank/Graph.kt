@@ -1,27 +1,28 @@
 package net.emdal.tank
 
-data class Graph(val query: String = "", val aliases: List<Pair<String, Entity?>> = emptyList()) {
+data class Graph(val query: String = "", val aliases: List<Pair<String, List<Entity>>> = emptyList()) {
 
   /**
    * Wraps an entity's property constraint string of a query in curly braces if there are any. Otherwise
    * returns an empty string.
    */
-  private fun String?.body(): String = this?.let { " { $it}" } ?: ""
+  private fun String?.body(): String = this?.let { " { $it }" } ?: ""
 
   fun <T : Node> node(
     alias: String = "",
-    node: T,
+    vararg labels: T,
     block: T.() -> String? = { null }
-  ): Graph = node(node, alias, block)
+  ): Graph = this.copy(
+    query = query + "($alias:${labels.map(Node::label).joinToString(":")}${labels.first().block().body()})",
+    aliases = aliases + (alias to labels.toList())
+  )
 
   fun <T : Node> node(
-    node: T,
-    alias: String = "",
+    vararg labels: T,
     block: T.() -> String? = { null }
   ): Graph {
     return this.copy(
-      query = query + "($alias:${node.label}${node.block().body()})",
-      aliases = aliases + (alias to node)
+      query = query + "(:${labels.map(Node::label).joinToString(":")}${labels.first().block().body()})"
     )
   }
 
@@ -31,7 +32,7 @@ data class Graph(val query: String = "", val aliases: List<Pair<String, Entity?>
   ): Graph {
     return this.copy(
       query = query + "($alias${block().body()})",
-      aliases = aliases + (alias to null)
+      aliases = aliases + (alias to emptyList())
     )
   }
 
@@ -41,24 +42,25 @@ data class Graph(val query: String = "", val aliases: List<Pair<String, Entity?>
   ): Graph {
     return this.copy(
       query = query + "-[$alias${block().body()}]->",
-      aliases = aliases + (alias to null)
+      aliases = aliases + (alias to emptyList())
     )
   }
 
   fun <T : Relationship> relationship(
     alias: String = "",
-    madeFrom: T,
+    vararg madeFrom: T,
     block: T.() -> String? = { null }
-  ): Graph = relationship(madeFrom, alias, block)
+  ): Graph = this.copy(
+    query = query + "-[$alias:${madeFrom.map(Relationship::type).joinToString("|")}${madeFrom.first().block().body()}]->",
+    aliases = aliases + (alias to madeFrom.toList())
+  )
 
   fun <T : Relationship> relationship(
-    relationship: T,
-    alias: String = "",
+    vararg relationship: T,
     block: T.() -> String? = { null }
   ): Graph {
     return this.copy(
-      query = query + "-[$alias:${relationship.name}${relationship.block().body()}]->",
-      aliases = aliases + (alias to relationship)
+      query = query + "-[:${relationship.map(Relationship::type).joinToString("|")}${relationship.first().block().body()}]->"
     )
   }
 }

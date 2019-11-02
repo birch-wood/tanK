@@ -1,3 +1,3 @@
 package net.emdal.tank
 
-open class Relationship(val name: String) : Entity()
+open class Relationship(val type: String) : Entity()
