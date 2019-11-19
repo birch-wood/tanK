@@ -1,25 +1,25 @@
 package net.emdal.tank
 
-import net.emdal.tank.Keyword.CREATE
-import net.emdal.tank.Keyword.MATCH
+import net.emdal.tank.Clause.CREATE
+import net.emdal.tank.Clause.MATCH
 import org.neo4j.driver.Session
 
 fun Session.query(block: Graph.() -> Graph) =
   this.run("${Graph().block().query} RETURN *").list().toList()
 
-fun Graph.keyword(keyword: Keyword): Graph {
-  return this.copy(query = "$query\n${keyword.name} ".trimIndent())
+fun Graph.clause(clause: Clause): Graph {
+  return this.copy(query = "$query\n${clause.name} ".trimIndent())
 }
 
 fun Graph.match(graph: Graph.() -> Graph): Graph {
-  return this.keyword(MATCH).graph()
+  return this.clause(MATCH).graph()
 }
 
 fun Graph.create(graph: Graph.() -> Graph): Graph {
-  return this.keyword(CREATE).graph()
+  return this.clause(CREATE).graph()
 }
 
-enum class Keyword {
+enum class Clause {
   MATCH,
   CREATE
 }
