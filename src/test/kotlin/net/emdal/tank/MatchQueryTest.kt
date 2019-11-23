@@ -6,7 +6,7 @@ class MatchQueryTest {
 
   @Test
   fun `match node with string property`() {
-    val query = Graph().match {
+    val query = Query().match {
       node("recipes", Recipe)
         .relationship(MadeFrom)
         .node(Ingredient) { name eq "flour" }
@@ -19,7 +19,7 @@ class MatchQueryTest {
 
   @Test
   internal fun `multiline match query looks sane`() {
-    Graph().match {
+    Query().match {
       node("a", Recipe)
         .relationship(MadeFrom)
         .node(Ingredient) { name eq "sugar" }
@@ -36,7 +36,7 @@ class MatchQueryTest {
 
   @Test
   internal fun `multiple node labels`() {
-    Graph().match {
+    Query().match {
       node("a", Recipe, Ingredient)
     }.query eq """
       MATCH (a:Recipe:Ingredient)
@@ -45,7 +45,7 @@ class MatchQueryTest {
 
   @Test
   internal fun `multiple node labels with one label properties set`() {
-    Graph().match {
+    Query().match {
       node("a", Recipe, Ingredient) {
         Recipe.name eq "cake"
       }
@@ -56,7 +56,7 @@ class MatchQueryTest {
 
   @Test
   internal fun `multiple node labels with both label properties set`() {
-    Graph().match {
+    Query().match {
       node("a", Recipe, Ingredient) {
         (Recipe.name eq "cake") and (Ingredient.taste eq "sweet")
       }
@@ -67,7 +67,7 @@ class MatchQueryTest {
 
   @Test
   internal fun `multiple relationship types with no alias`() {
-    Graph().match {
+    Query().match {
       node()
         .relationship(MadeFrom, IsMainIngredient)
         .node()
@@ -78,7 +78,7 @@ class MatchQueryTest {
 
   @Test
   internal fun `multiple relationship types`() {
-    Graph().match {
+    Query().match {
       node()
         .relationship("a", MadeFrom, IsMainIngredient)
         .node()
@@ -89,7 +89,7 @@ class MatchQueryTest {
 
   @Test
   internal fun `multiple relationship types with properties set for both types`() {
-    Graph().match {
+    Query().match {
       node()
         .relationship("a", MadeFrom, IsMainIngredient) {
           (MadeFrom.grams eq 100) and (IsMainIngredient.reason eq "tastes good")

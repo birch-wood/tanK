@@ -6,7 +6,7 @@ class CreateQueryTest {
 
   @Test
   fun `create empty node`() {
-    val query = Graph().create {
+    val query = Query().create {
       node()
     }.query
 
@@ -17,7 +17,7 @@ class CreateQueryTest {
 
   @Test
   internal fun `create node with alias`() {
-    val query = Graph().create {
+   val query = Query().create {
       node("n")
     }.query
 
@@ -28,7 +28,7 @@ class CreateQueryTest {
 
   @Test
   internal fun `create multiple nodes with different aliases`() {
-    val query = Graph()
+    val query = Query()
       .create { node("n") }
       .create { node("m") }
       .query
@@ -41,7 +41,7 @@ class CreateQueryTest {
 
   @Test
   internal fun `create a node with a label`() {
-    val query = Graph().create {
+    val query = Query().create {
       node("n", Recipe)
     }.query
 
@@ -53,7 +53,7 @@ class CreateQueryTest {
 
   @Test
   internal fun `create a node with multiple labels`() {
-    val query = Graph().create {
+    val query = Query().create {
       node("n", Recipe, Norwegian)
     }.query
 
@@ -64,7 +64,7 @@ class CreateQueryTest {
 
   @Test
   internal fun `create node with labels and properties`() {
-    val query = Graph().create {
+    val query = Query().create {
       node("n", Norwegian) { town eq "Trondheim" }
     }.query
 

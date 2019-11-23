@@ -1,25 +1,17 @@
 package net.emdal.tank
 
-import net.emdal.tank.Clause.CREATE
-import net.emdal.tank.Clause.MATCH
-import org.neo4j.driver.Session
+import net.emdal.tank.clause.Clause
+import net.emdal.tank.clause.CreateClause
+import net.emdal.tank.clause.MatchClause
 
-fun Session.query(block: Graph.() -> Graph) =
-  this.run("${Graph().block().query} RETURN *").list().toList()
+data class Query(val clauses: List<Clause> = emptyList()) {
+  val query get() = clauses.joinToString("\n") { it.query.joinToString("") }
 
-fun Graph.clause(clause: Clause): Graph {
-  return this.copy(query = "$query\n${clause.name} ".trimIndent())
-}
+  fun match(graph: MatchClause.() -> MatchClause) = this.copy(
+    clauses = clauses + MatchClause().graph()
+  )
 
-fun Graph.match(graph: Graph.() -> Graph): Graph {
-  return this.clause(MATCH).graph()
-}
-
-fun Graph.create(graph: Graph.() -> Graph): Graph {
-  return this.clause(CREATE).graph()
-}
-
-enum class Clause {
-  MATCH,
-  CREATE
+  fun create(graph: CreateClause.() -> CreateClause)= this.copy(
+    clauses = clauses + CreateClause().graph()
+  )
 }
