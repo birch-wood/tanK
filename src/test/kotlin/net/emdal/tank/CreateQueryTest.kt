@@ -10,65 +10,65 @@ class CreateQueryTest {
       node()
     }.cypher
 
-    query eq """
+    query shouldBe """
       CREATE ()
     """.trimIndent()
   }
 
   @Test
-  internal fun `create node with alias`() {
+  fun `create node with alias`() {
     val query = Query().create {
       node("n")
     }.cypher
 
-    query eq """
+    query shouldBe """
       CREATE (n)
     """.trimIndent()
   }
 
   @Test
-  internal fun `create multiple nodes with different aliases`() {
+  fun `create multiple nodes with different aliases`() {
     val query = Query()
       .create { node("n") }
       .create { node("m") }
       .cypher
 
-    query eq """
+    query shouldBe """
       CREATE (n)
       CREATE (m)
     """.trimIndent()
   }
 
   @Test
-  internal fun `create a node with a label`() {
+  fun `create a node with a label`() {
     val query = Query().create {
       node("n", Recipe)
     }.cypher
 
-    query eq """
+    query shouldBe """
       CREATE (n:Recipe)
     """.trimIndent()
   }
 
 
   @Test
-  internal fun `create a node with multiple labels`() {
+  fun `create a node with multiple labels`() {
     val query = Query().create {
       node("n", Recipe, Norwegian)
     }.cypher
 
-    query eq """
+    query shouldBe """
       CREATE (n:Recipe:Norwegian)
     """.trimIndent()
   }
 
   @Test
-  internal fun `create node with labels and properties`() {
+  fun `create node with labels and properties`() {
     val query = Query().create {
       node("n", Norwegian) { town eq "Trondheim" }
     }.cypher
 
-    query eq """
+    query shouldBe """
       CREATE (n:Norwegian { town: "Trondheim" })
     """.trimIndent()
   }

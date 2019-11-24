@@ -51,7 +51,7 @@ class MatchIntegrationTest {
             .node(Ingredient) { name eq "flour" }
         }
       }.forEach {
-        it["recipes"][Recipe.name] eq "cake"
+        it["recipes"][Recipe.name] shouldBe "cake"
       }
     }
   }
@@ -73,7 +73,7 @@ class MatchIntegrationTest {
             .node(Ingredient) { name eq "flour" }
         }
       }.forEach {
-        it["madeOf"][MadeFrom.grams] eq 100
+        it["madeOf"][MadeFrom.grams] shouldBe 100
       }
     }
   }
@@ -101,7 +101,7 @@ class MatchIntegrationTest {
             .node(Ingredient) { name eq "flour" }
         }
       }.forEach {
-        it["a"][Recipe.name] eq "cake"
+        it["a"][Recipe.name] shouldBe "cake"
       }
     }
   }

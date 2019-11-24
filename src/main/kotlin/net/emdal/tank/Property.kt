@@ -2,25 +2,12 @@ package net.emdal.tank
 
 import org.neo4j.driver.Value
 
-data class StringProperty(val propertyName: String)
-
-data class IntProperty(val propertyName: String)
+interface Property { val propertyName:String }
+data class StringProperty(override val propertyName: String) : Property
+data class IntProperty(override val propertyName: String) : Property
 
 fun string(propertyName: String) = StringProperty(propertyName)
-
 fun int(propertyName: String) = IntProperty(propertyName)
-
-fun IntProperty.nullable(): IntProperty? = this
-
-fun StringProperty.nullable(): StringProperty? = this
-
-infix fun StringProperty.eq(value: String): String {
-  return """${this.propertyName}: "$value""""
-}
-
-infix fun IntProperty?.eq(value: Int): String {
-  return """${this?.propertyName}: $value"""
-}
 
 infix fun String.and(newProperty: String) = "$this, $newProperty"
 

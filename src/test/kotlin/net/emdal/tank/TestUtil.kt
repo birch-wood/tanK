@@ -3,7 +3,7 @@ package net.emdal.tank
 import org.assertj.core.api.Assertions.assertThat
 import org.neo4j.driver.Session
 
-infix fun Any?.eq(other: Any?) {
+infix fun Any?.shouldBe(other: Any?) {
   assertThat(this).isEqualTo(other)
 }
 
@@ -13,6 +13,7 @@ fun Session.deleteAllInDatabase() {
 
 object Recipe : Node("Recipe") {
   val name = string("name")
+  val calories = int("calories")
 }
 
 object Norwegian : Node("Norwegian") {
@@ -20,7 +21,9 @@ object Norwegian : Node("Norwegian") {
 }
 
 object MadeFrom : Relationship("MADE_FROM") {
-  val grams = int("grams").nullable()
+  val grams = int("grams")
+  val recipeStep = int("recipeStep")
+  val description = string("description")
 }
 
 object IsMainIngredient : Relationship("IS_MAIN_INGREDIENT") {

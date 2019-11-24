@@ -1,8 +1,6 @@
 package net.emdal.tank.clause
 
-import net.emdal.tank.Entity
-import net.emdal.tank.Node
-import net.emdal.tank.Relationship
+import net.emdal.tank.*
 
 interface GraphClause : Clause {
 
@@ -96,4 +94,12 @@ interface GraphClause : Clause {
     entities.first().block().body()
 
   private fun String?.body(): String = this?.let { " { $it }" } ?: ""
+
+  infix fun StringProperty.eq(value: String): String {
+    return """${this.propertyName}: "$value""""
+  }
+
+  infix fun IntProperty.eq(value: Int): String {
+    return """${this.propertyName}: $value"""
+  }
 }
