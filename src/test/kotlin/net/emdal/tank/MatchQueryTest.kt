@@ -10,7 +10,7 @@ class MatchQueryTest {
       node("recipes", Recipe)
         .relationship(MadeFrom)
         .node(Ingredient) { name eq "flour" }
-    }.query
+    }.cypher
 
     query eq """
       MATCH (recipes:Recipe)-[:MADE_FROM]->(:Ingredient { name: "flour" })
@@ -27,7 +27,7 @@ class MatchQueryTest {
       node("a")
         .relationship(MadeFrom)
         .node(Ingredient) { name eq "flour" }
-    }.query eq """
+    }.cypher eq """
       MATCH (a:Recipe)-[:MADE_FROM]->(:Ingredient { name: "sugar" })
       MATCH (a)-[:MADE_FROM]->(:Ingredient { name: "flour" })
     """.trimIndent()
@@ -38,7 +38,7 @@ class MatchQueryTest {
   internal fun `multiple node labels`() {
     Query().match {
       node("a", Recipe, Ingredient)
-    }.query eq """
+    }.cypher eq """
       MATCH (a:Recipe:Ingredient)
     """.trimIndent()
   }
@@ -49,7 +49,7 @@ class MatchQueryTest {
       node("a", Recipe, Ingredient) {
         Recipe.name eq "cake"
       }
-    }.query eq """
+    }.cypher eq """
       MATCH (a:Recipe:Ingredient { name: "cake" })
     """.trimIndent()
   }
@@ -60,7 +60,7 @@ class MatchQueryTest {
       node("a", Recipe, Ingredient) {
         (Recipe.name eq "cake") and (Ingredient.taste eq "sweet")
       }
-    }.query eq """
+    }.cypher eq """
       MATCH (a:Recipe:Ingredient { name: "cake", taste: "sweet" })
     """.trimIndent()
   }
@@ -71,7 +71,7 @@ class MatchQueryTest {
       node()
         .relationship(MadeFrom, IsMainIngredient)
         .node()
-    }.query eq """
+    }.cypher eq """
       MATCH ()-[:MADE_FROM|IS_MAIN_INGREDIENT]->()
     """.trimIndent()
   }
@@ -82,7 +82,7 @@ class MatchQueryTest {
       node()
         .relationship("a", MadeFrom, IsMainIngredient)
         .node()
-    }.query eq """
+    }.cypher eq """
       MATCH ()-[a:MADE_FROM|IS_MAIN_INGREDIENT]->()
     """.trimIndent()
   }
@@ -95,7 +95,7 @@ class MatchQueryTest {
           (MadeFrom.grams eq 100) and (IsMainIngredient.reason eq "tastes good")
         }
         .node()
-    }.query eq """
+    }.cypher eq """
       MATCH ()-[a:MADE_FROM|IS_MAIN_INGREDIENT { grams: 100, reason: "tastes good" }]->()
     """.trimIndent()
   }

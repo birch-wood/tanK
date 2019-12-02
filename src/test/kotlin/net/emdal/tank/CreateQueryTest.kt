@@ -8,7 +8,7 @@ class CreateQueryTest {
   fun `create empty node`() {
     val query = Query().create {
       node()
-    }.query
+    }.cypher
 
     query eq """
       CREATE ()
@@ -19,7 +19,7 @@ class CreateQueryTest {
   internal fun `create node with alias`() {
     val query = Query().create {
       node("n")
-    }.query
+    }.cypher
 
     query eq """
       CREATE (n)
@@ -31,7 +31,7 @@ class CreateQueryTest {
     val query = Query()
       .create { node("n") }
       .create { node("m") }
-      .query
+      .cypher
 
     query eq """
       CREATE (n)
@@ -43,7 +43,7 @@ class CreateQueryTest {
   internal fun `create a node with a label`() {
     val query = Query().create {
       node("n", Recipe)
-    }.query
+    }.cypher
 
     query eq """
       CREATE (n:Recipe)
@@ -55,7 +55,7 @@ class CreateQueryTest {
   internal fun `create a node with multiple labels`() {
     val query = Query().create {
       node("n", Recipe, Norwegian)
-    }.query
+    }.cypher
 
     query eq """
       CREATE (n:Recipe:Norwegian)
@@ -66,7 +66,7 @@ class CreateQueryTest {
   internal fun `create node with labels and properties`() {
     val query = Query().create {
       node("n", Norwegian) { town eq "Trondheim" }
-    }.query
+    }.cypher
 
     query eq """
       CREATE (n:Norwegian { town: "Trondheim" })
