@@ -22,7 +22,7 @@ infix fun IntProperty?.eq(value: Int): String {
   return """${this?.propertyName}: $value"""
 }
 
-infix fun String.and(newProperty:String) = "$this, $newProperty"
+infix fun String.and(newProperty: String) = "$this, $newProperty"
 
 operator fun Value.get(property: StringProperty): String = this[property.propertyName].asString()
 operator fun Value.get(property: IntProperty): Int = this[property.propertyName].asInt()

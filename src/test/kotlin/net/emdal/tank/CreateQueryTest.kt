@@ -17,7 +17,7 @@ class CreateQueryTest {
 
   @Test
   internal fun `create node with alias`() {
-   val query = Query().create {
+    val query = Query().create {
       node("n")
     }.query
 

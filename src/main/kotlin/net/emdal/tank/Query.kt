@@ -11,7 +11,7 @@ data class Query(val clauses: List<Clause> = emptyList()) {
     clauses = clauses + MatchClause().graph()
   )
 
-  fun create(graph: CreateClause.() -> CreateClause)= this.copy(
+  fun create(graph: CreateClause.() -> CreateClause) = this.copy(
     clauses = clauses + CreateClause().graph()
   )
 }
