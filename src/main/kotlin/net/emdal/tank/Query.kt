@@ -1,15 +1,16 @@
 package net.emdal.tank
 
-import net.emdal.tank.clause.Clause
-import net.emdal.tank.clause.CreateClause
-import net.emdal.tank.clause.MatchClause
-import net.emdal.tank.clause.SetClause
+import net.emdal.tank.clause.*
 
 data class Query(val clauses: List<Clause> = emptyList()) {
   val cypher get() = clauses.joinToString("\n") { it.query.joinToString("") }
 
   fun match(graph: MatchClause.() -> MatchClause) = this.copy(
     clauses = clauses + MatchClause().graph()
+  )
+
+  fun merge(graph: MergeClause.() -> MergeClause) = this.copy(
+    clauses = clauses + MergeClause().graph()
   )
 
   fun create(graph: CreateClause.() -> CreateClause) = this.copy(
