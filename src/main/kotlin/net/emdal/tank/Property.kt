@@ -2,7 +2,10 @@ package net.emdal.tank
 
 import org.neo4j.driver.Value
 
-interface Property { val propertyName:String }
+interface Property {
+  val propertyName: String
+}
+
 data class StringProperty(override val propertyName: String) : Property
 data class IntProperty(override val propertyName: String) : Property
 

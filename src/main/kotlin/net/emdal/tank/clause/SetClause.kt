@@ -6,12 +6,12 @@ import net.emdal.tank.Property
 import net.emdal.tank.StringProperty
 
 class SetClause(
-  private val alias:String,
+  private val alias: String,
   override var query: List<String> = listOf("SET "),
   override var aliases: Map<String, List<Entity>> = emptyMap()
 ) : Clause {
 
-  infix fun Property.eq(value:Any) = SetClause(
+  infix fun Property.eq(value: Any) = SetClause(
     alias = alias,
     query = query + "$alias.${this.propertyName} = ${format(value)}",
     aliases = aliases
