@@ -10,7 +10,6 @@ class SetClause(
   override var query: List<String> = listOf("SET "),
   override var aliases: Map<String, List<Entity>> = emptyMap()
 ) : Clause {
-
   infix fun Property.eq(value: Any) = SetClause(
     alias = alias,
     query = query + "$alias.${this.propertyName} = ${format(value)}",
@@ -22,5 +21,4 @@ class SetClause(
     is StringProperty -> "\"$value\""
     else -> value
   }
-
 }

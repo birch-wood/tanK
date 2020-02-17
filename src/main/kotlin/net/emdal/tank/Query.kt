@@ -21,4 +21,11 @@ data class Query(val clauses: List<Clause> = emptyList()) {
     clauses = clauses + SetClause(alias).graph()
   )
 
+  fun where(alias:String, graph: WhereClause.() -> WhereClause) = this.copy(
+    clauses = clauses + WhereClause(alias).graph()
+  )
+
+  fun returnWith(vararg alias:String) = this.copy(
+    clauses = clauses + ReturnClause().returnWith(*alias)
+  )
 }

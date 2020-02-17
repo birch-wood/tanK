@@ -49,7 +49,7 @@ class MatchIntegrationTest {
           node("recipes", Recipe)
             .relationship(MadeFrom)
             .node(Ingredient) { name eq "flour" }
-        }
+        }.returnWith("recipes")
       }.forEach {
         it["recipes"][Recipe.name] shouldBe "cake"
       }
@@ -71,7 +71,7 @@ class MatchIntegrationTest {
           node(Recipe)
             .relationship("madeOf", MadeFrom)
             .node(Ingredient) { name eq "flour" }
-        }
+        }.returnWith("madeOf")
       }.forEach {
         it["madeOf"][MadeFrom.grams] shouldBe 100
       }
@@ -99,7 +99,7 @@ class MatchIntegrationTest {
           node("a")
             .relationship(MadeFrom)
             .node(Ingredient) { name eq "flour" }
-        }
+        }.returnWith("a")
       }.forEach {
         it["a"][Recipe.name] shouldBe "cake"
       }
