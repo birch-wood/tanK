@@ -2,23 +2,15 @@ package net.emdal.tank.clause
 
 import net.emdal.tank.Entity
 import net.emdal.tank.IntProperty
-import net.emdal.tank.Property
-import net.emdal.tank.StringProperty
 
 class WhereClause(
   private val alias: String,
   override var query: List<String> = listOf("WHERE "),
   override var aliases: Map<String, List<Entity>> = emptyMap()
 ) : Clause {
-  infix fun Property.greaterThan(value: Any) = WhereClause(
+  infix fun IntProperty.greaterThan(value: Int) = WhereClause(
     alias = alias,
-    query = query + "$alias.${this.propertyName} > ${format(value)}",
+    query = query + "$alias.${this.propertyName} > $value",
     aliases = aliases
   )
-
-  private fun Property.format(value: Any) = when (this) {
-    is IntProperty -> value
-    is StringProperty -> "\"$value\""
-    else -> value
-  }
 }
