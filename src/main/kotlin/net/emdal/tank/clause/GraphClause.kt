@@ -14,7 +14,6 @@ interface GraphClause : Clause {
   fun <T : Node, C : Clause> C.node(alias: String = "", vararg labels: T, properties: T.() -> String? = { null }) =
     this.apply {
       query = query + "($alias:${concatenate(labels)}${properties(labels, properties)})"
-      aliases = aliases + (alias to labels.toList())
     }
 
   /**
@@ -37,7 +36,6 @@ interface GraphClause : Clause {
    */
   fun <C : Clause> C.node(alias: String = "", block: () -> String? = { null }): C = this.apply {
     query = query + "($alias${properties(block)})"
-    aliases = aliases + (alias to emptyList())
   }
 
   /**
@@ -49,7 +47,6 @@ interface GraphClause : Clause {
    */
   fun <C : Clause> C.relationship(alias: String = "", block: () -> String? = { null }): C = this.apply {
     query = query + "-[$alias${properties(block)}]->"
-    aliases = aliases + (alias to emptyList())
   }
 
   /**
@@ -65,7 +62,6 @@ interface GraphClause : Clause {
     block: T.() -> String? = { null }
   ): C = this.apply {
     query = query + "-[$alias:${concatenate(types)}${properties(types, block)}]->"
-    aliases = aliases + (alias to types.toList())
   }
 
   /**
