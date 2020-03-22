@@ -8,7 +8,7 @@ val neo4jVersion = "3.5.9"
 val testcontainersVersion = "1.12.2"
 val kotlinVersion = plugins.getPlugin(KotlinPluginWrapper::class.java).kotlinPluginVersion
 plugins {
-    kotlin("jvm") version "1.3.50"
+    kotlin("jvm") version "1.3.70"
 }
 
 group = "net.emdal.tanK"
