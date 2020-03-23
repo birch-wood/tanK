@@ -2,7 +2,7 @@ import org.jetbrains.kotlin.gradle.plugin.KotlinPluginWrapper
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 val spekVersion = "2.0.7"
-val neo4jJavaDriverVersion = "4.0.0-beta01"
+val neo4jJavaDriverVersion = "4.0.0"
 val junitVersion = "5.5.2"
 val neo4jVersion = "3.5.9"
 val testcontainersVersion = "1.12.2"
