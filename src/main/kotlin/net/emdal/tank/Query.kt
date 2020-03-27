@@ -3,7 +3,8 @@ package net.emdal.tank
 import net.emdal.tank.clause.*
 
 data class Query(val clauses: List<Clause> = emptyList()) {
-  val cypher get() = clauses.joinToString("\n") { it.query.joinToString("") }
+
+  val cypher get() = clauses.joinToString(separator = "\n", transform = Clause::cypher)
 
   fun match(graph: MatchClause.() -> MatchClause) = this.copy(
     clauses = clauses + MatchClause().graph()

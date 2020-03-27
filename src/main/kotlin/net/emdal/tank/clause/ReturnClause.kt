@@ -1,7 +1,10 @@
 package net.emdal.tank.clause
 
-class ReturnClause(override var query: List<String> = listOf("RETURN ")) : Clause {
+class ReturnClause(override var queryParts: List<String> = emptyList()) : Clause {
+
+  override val verb = "RETURN"
+
   fun returnWith(vararg entities: String) = ReturnClause(
-    query = query + entities.joinToString(",")
+    queryParts = queryParts + entities.joinToString(",")
   )
 }

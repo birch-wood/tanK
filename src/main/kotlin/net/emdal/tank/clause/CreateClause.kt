@@ -1,3 +1,6 @@
 package net.emdal.tank.clause
 
-class CreateClause(override var query: List<String> = listOf("CREATE ")) : GraphClause
+class CreateClause(override var queryParts: List<String> = emptyList()) : GraphClause {
+
+  override val verb = "CREATE"
+}

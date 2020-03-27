@@ -1,5 +1,7 @@
 package net.emdal.tank.clause
 
 interface Clause {
-  var query: List<String>
+  var queryParts: List<String>
+  val verb:String
+  val cypher:String get() = "$verb ${queryParts.joinToString("")}"
 }

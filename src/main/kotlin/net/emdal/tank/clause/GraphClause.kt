@@ -13,7 +13,7 @@ interface GraphClause : Clause {
    */
   fun <T : Node, C : Clause> C.node(alias: String = "", vararg labels: T, properties: T.() -> String? = { null }) =
     this.apply {
-      query = query + "($alias:${concatenate(labels)}${properties(labels, properties)})"
+      queryParts = queryParts + "($alias:${concatenate(labels)}${properties(labels, properties)})"
     }
 
   /**
@@ -24,7 +24,7 @@ interface GraphClause : Clause {
    * this node function.
    */
   fun <T : Node, C : Clause> C.node(vararg labels: T, block: T.() -> String? = { null }): C = this.apply {
-    query = query + "(:${concatenate(labels)}${properties(labels, block)})"
+    queryParts = queryParts + "(:${concatenate(labels)}${properties(labels, block)})"
   }
 
   /**
@@ -35,7 +35,7 @@ interface GraphClause : Clause {
    * this node function.
    */
   fun <C : Clause> C.node(alias: String = "", block: () -> String? = { null }): C = this.apply {
-    query = query + "($alias${properties(block)})"
+    queryParts = queryParts + "($alias${properties(block)})"
   }
 
   /**
@@ -46,7 +46,7 @@ interface GraphClause : Clause {
    * this [relationship] function.
    */
   fun <C : Clause> C.relationship(alias: String = "", block: () -> String? = { null }): C = this.apply {
-    query = query + "-[$alias${properties(block)}]->"
+    queryParts = queryParts + "-[$alias${properties(block)}]->"
   }
 
   /**
@@ -61,7 +61,7 @@ interface GraphClause : Clause {
     vararg types: T,
     block: T.() -> String? = { null }
   ): C = this.apply {
-    query = query + "-[$alias:${concatenate(types)}${properties(types, block)}]->"
+    queryParts = queryParts + "-[$alias:${concatenate(types)}${properties(types, block)}]->"
   }
 
   /**
@@ -73,7 +73,7 @@ interface GraphClause : Clause {
    */
   fun <T : Relationship, C : Clause> C.relationship(vararg types: T, block: T.() -> String? = { null }): C =
     this.apply {
-      query = query + "-[:${concatenate(types)}${properties(types, block)}]->"
+      queryParts = queryParts + "-[:${concatenate(types)}${properties(types, block)}]->"
     }
 
   private fun <T : Node> concatenate(labels: Array<out T>) = labels.map(
