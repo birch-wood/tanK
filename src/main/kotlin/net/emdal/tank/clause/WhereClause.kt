@@ -4,10 +4,12 @@ import net.emdal.tank.IntProperty
 
 class WhereClause(
   private val alias: String,
-  override var query: List<String> = listOf("WHERE ")
+  override var queryParts: List<String> = emptyList()
 ) : Clause {
+  override val verb = "WHERE"
+
   infix fun IntProperty.greaterThan(value: Int) = WhereClause(
     alias = alias,
-    query = query + "$alias.${this.propertyName} > $value"
+    queryParts = queryParts + "$alias.${this.propertyName} > $value"
   )
 }

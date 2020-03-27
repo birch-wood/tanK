@@ -1,3 +1,6 @@
 package net.emdal.tank.clause
 
-class MergeClause(override var query: List<String> = listOf("MERGE ")) : GraphClause
+class MergeClause(override var queryParts: List<String> = emptyList()) : GraphClause {
+
+  override val verb = "MERGE"
+}
